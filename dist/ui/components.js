@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=4874af0";
+import { esc } from "./escape.js?v=310f48d";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -625,4 +625,19 @@ export function rehearsalBanner(on, held) {
       <span>${"Decisions compute and the queue moves. Nothing is saved, and " +
         "nothing would leave the building. " + what}</span>
     </div>`;
+}
+/**
+ * Flips between our design system and Fluent, in place.
+ *
+ * Explicitly a comparison tool, not a product setting — which is why it names
+ * the system it would switch TO. A client build would drop it and keep the
+ * ?ds= parameter, or drop both.
+ */
+export function designSystemSwitch(current) {
+    const next = current === "fluent" ? "btrmnt" : "fluent";
+    const label = next === "fluent" ? "Fluent" : "btrmnt";
+    return (`<button class="btn-tertiary view-switch ds-switch" data-action="set-ds" ` +
+        `data-value="${esc(next)}" title="Re-skin with ${esc(label)}'s design tokens">` +
+        `<span class="ds-switch__swatch" aria-hidden="true"></span>` +
+        `<span>${esc(label)}</span></button>`);
 }

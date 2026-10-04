@@ -42,3 +42,28 @@ export function initTheme() {
     apply();
     media?.addEventListener?.("change", apply);
 }
+/**
+ * Reads the design system from the query string.
+ *
+ * A comparison affordance rather than a product setting: it exists so the two
+ * can be put side by side and judged with eyes rather than argued about in
+ * the abstract. Defaults to ours, and an unrecognised value does not silently
+ * become Fluent.
+ */
+export function resolveDesignSystem(search) {
+    return new URLSearchParams(search).get("ds") === "fluent" ? "fluent" : "btrmnt";
+}
+/** Applies it, and returns what was applied. */
+export function initDesignSystem() {
+    const ds = resolveDesignSystem(window.location.search);
+    document.documentElement.dataset.ds = ds;
+    return ds;
+}
+/** Flips between the two without a reload, so they can be compared in place. */
+export function setDesignSystem(ds) {
+    document.documentElement.dataset.ds = ds;
+}
+/** What is painting right now. */
+export function currentDesignSystem() {
+    return document.documentElement.dataset.ds === "fluent" ? "fluent" : "btrmnt";
+}

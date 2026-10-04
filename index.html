@@ -31,8 +31,16 @@
               window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
 
+        // Design system, on the same terms: set before any stylesheet so the
+        // page never paints one system and flips to the other.
+        document.documentElement.dataset.ds =
+          new URLSearchParams(location.search).get('ds') === 'fluent'
+            ? 'fluent'
+            : 'btrmnt';
+
         var v = Date.now().toString(36);
-        ['src/ui/fonts.css', 'src/ui/tokens.css', 'src/ui/styles.css'].forEach(
+        ['src/ui/fonts.css', 'src/ui/tokens.css', 'src/ui/styles.css',
+          'src/ui/fluent.css'].forEach(
           function (href) {
             var link = document.createElement('link');
             link.rel = 'stylesheet';

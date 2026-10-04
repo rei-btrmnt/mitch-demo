@@ -1,0 +1,141 @@
+/* ── Fluent ────────────────────────────────────────────────────────────────
+   Microsoft's design system, applied as an alias layer.
+   Toggle with  ?ds=fluent  or the header control; the attribute is on <html>.
+
+   NOTHING in styles.css changes. Every rule there already resolves a token,
+   so re-pointing the tokens re-skins the whole application — which is the
+   only reason this is 70 lines rather than a second implementation.
+
+   Values are the TEAMS themes from @fluentui/tokens 1.0.0-alpha.24, read out
+   of the published package rather than transcribed from documentation. Teams
+   rather than Web deliberately: the brand is #5b5fc7, Teams' purple, not the
+   #0f6cbd blue of Fluent on the open web. A tab that uses Web brand colour
+   looks like a site embedded in Teams; one that uses Teams brand looks like
+   part of it.
+
+   Three honest mismatches, called out where they occur below. This is a
+   re-skin, not a re-design: Fluent has no component for an actions inbox, so
+   what it can lend is colour, radius and shadow — and radius is where the two
+   systems disagree most.
+
+   Written as static values rather than importing @fluentui/tokens: that
+   package is still alpha, ships JavaScript rather than CSS, and would need a
+   bundler this build deliberately does not have. The cost is that these do
+   not track upstream — re-read them from the package when Fluent moves. */
+
+:root[data-ds="fluent"] {
+  /* ink */
+  --ink-1: #242424;              /* colorNeutralForeground1 */
+  --ink-2: #242424;
+  --ink-muted-1: #424242;        /* colorNeutralForeground2 */
+  --ink-muted-2: #616161;        /* colorNeutralForeground3 */
+  --ink-muted-3: #707070;        /* colorNeutralForeground4 */
+
+  /* brand — Teams purple, not Highland navy */
+  --brand-navy: #5b5fc7;         /* colorBrandForeground1 */
+  --brand-navy-2: #5b5fc7;       /* colorBrandBackground — the primary fill */
+  --accent-blue: #5b5fc7;
+  --accent-blue-strong: #5b5fc7;
+  --accent-blue-tint: #e8ebfa;   /* colorBrandBackground2 */
+  --on-brand: #ffffff;           /* colorNeutralForegroundOnBrand */
+
+  /* status — Fluent's shared palette, which has no "needs you": brand carries
+     it, exactly as Fluent uses brand for the thing being asked of you */
+  --status-needs-you-ink: #5b5fc7;
+  --status-needs-you-tint: #e8ebfa;
+  --status-sent-ink: #0e700e;    /* colorPaletteGreenForeground1 */
+  --status-sent-tint: #f1faf1;
+  --status-waiting-ink: #c43501; /* colorPaletteDarkOrangeForeground1 */
+  --status-waiting-tint: #fdf6f3;
+  --status-closed-ink: #616161;
+  --status-closed-tint: #f5f5f5;
+  --danger-ink: #bc2f32;         /* colorPaletteRedForeground1 */
+  --danger-tint: #fdf6f6;
+  --danger-border: #bc2f32;
+  --danger-border-strong: #bc2f32;
+
+  /* surfaces */
+  --surface-page: #fafafa;       /* colorNeutralBackground2 */
+  --surface-card: #ffffff;       /* colorNeutralBackground1 */
+  --surface-context: #f5f5f5;    /* colorNeutralBackground3 */
+  --hairline: #e0e0e0;           /* colorNeutralStroke2 */
+  --hairline-strong: #d1d1d1;    /* colorNeutralStroke1 */
+  --overlay-border: #d1d1d1;
+  --tag-bg: #f5f5f5;
+  --tag-inset: none;
+  --scrim: rgba(0, 0, 0, 0.4);
+
+  /* MISMATCH 1 — radius. Fluent rounds at 2/4/6px; ours at 8/12/16. Fluent's
+     values are used, because half-adopting a design system's geometry is how
+     a thing ends up looking like neither. Expect everything to read sharper. */
+  --radius-sm: 4px;              /* borderRadiusMedium */
+  --radius-md: 6px;              /* borderRadiusLarge */
+  --radius-lg: 8px;              /* borderRadiusXLarge */
+  --radius-pill: 10000px;        /* borderRadiusCircular */
+  --radius-context: 0 6px 6px 0;
+
+  /* shadows — shadow4 / 8 / 16 / 28 */
+  --shadow-card: 0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14);
+  --shadow-control: 0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14);
+  --shadow-menu: 0 0 2px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.14);
+  --shadow-panel: 0 0 8px rgba(0,0,0,0.12), 0 14px 28px rgba(0,0,0,0.14);
+  --shadow-toast: 0 0 2px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.14);
+
+  /* MISMATCH 2 — the queue motif. Fluent has no decorative gradient and would
+     not sanction one; a flat neutral is the honest translation, and the ink on
+     it becomes ordinary foreground rather than white. */
+  --motif-queue: #f5f5f5;
+  --ink-on-motif: #616161;
+
+  /* MISMATCH 3 — typography is NOT re-pointed. Fluent's type ramp is Segoe UI
+     at its own sizes and line heights, and swapping the family without the
+     ramp produces neither system. Our faces stay; a true Fluent pass would
+     take the ramp with them. */
+}
+
+:root[data-ds="fluent"][data-theme="dark"],
+:root[data-ds="fluent"]:not([data-theme="light"]) {
+  --ink-1: #ffffff;
+  --ink-2: #ffffff;
+  --ink-muted-1: #d6d6d6;
+  --ink-muted-2: #adadad;
+  --ink-muted-3: #999999;
+
+  --brand-navy: #7f85f5;         /* colorBrandForeground1, dark */
+  --brand-navy-2: #4f52b2;       /* colorBrandBackground, dark */
+  --accent-blue: #7f85f5;
+  --accent-blue-strong: #7f85f5;
+  --accent-blue-tint: #2f2f4a;
+  --on-brand: #ffffff;
+
+  --status-needs-you-ink: #7f85f5;
+  --status-needs-you-tint: #2f2f4a;
+  --status-sent-ink: #54b054;
+  --status-sent-tint: #052505;
+  --status-waiting-ink: #e9835e;
+  --status-waiting-tint: #411200;
+  --status-closed-ink: #adadad;
+  --status-closed-tint: #1f1f1f;
+  --danger-ink: #e37d80;
+  --danger-tint: #3f1011;
+  --danger-border: #e37d80;
+  --danger-border-strong: #e37d80;
+
+  --surface-page: #242424;       /* colorNeutralBackground2, dark */
+  --surface-card: #292929;       /* colorNeutralBackground1, dark */
+  --surface-context: #1f1f1f;
+  --hairline: #525252;
+  --hairline-strong: #666666;
+  --overlay-border: #666666;
+  --tag-bg: #1f1f1f;
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  --shadow-card: 0 0 2px rgba(0,0,0,0.24), 0 2px 4px rgba(0,0,0,0.28);
+  --shadow-control: 0 0 2px rgba(0,0,0,0.24), 0 2px 4px rgba(0,0,0,0.28);
+  --shadow-menu: 0 0 2px rgba(0,0,0,0.24), 0 8px 16px rgba(0,0,0,0.28);
+  --shadow-panel: 0 0 8px rgba(0,0,0,0.24), 0 14px 28px rgba(0,0,0,0.28);
+  --shadow-toast: 0 0 2px rgba(0,0,0,0.24), 0 8px 16px rgba(0,0,0,0.28);
+
+  --motif-queue: #1f1f1f;
+  --ink-on-motif: #adadad;
+}

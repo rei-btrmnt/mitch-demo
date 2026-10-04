@@ -11,9 +11,9 @@
  * validates and lies.
  */
 import { readFile, writeFile } from "node:fs/promises";
-import { parseCsv } from "./csv.js?v=4874af0";
-import { normalise, buildPayload } from "./build.js?v=4874af0";
-import { validateActionsPayload, validateCompleted, validateCases } from "../actions/validate.js?v=4874af0";
+import { parseCsv } from "./csv.js?v=310f48d";
+import { normalise, buildPayload } from "./build.js?v=310f48d";
+import { validateActionsPayload, validateCompleted, validateCases } from "../actions/validate.js?v=310f48d";
 function arg(name) {
     const i = process.argv.indexOf(`--${name}`);
     return i === -1 ? undefined : process.argv[i + 1];

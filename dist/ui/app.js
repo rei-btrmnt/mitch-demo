@@ -1,16 +1,16 @@
-import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=4874af0";
-import { storageDecisionStore } from "../actions/decisions.js?v=4874af0";
-import { validateActionsPayload } from "../actions/validate.js?v=4874af0";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, rehearsalSwitch, rehearsalBanner, } from "./components.js?v=4874af0";
-import { showToast } from "./toast.js?v=4874af0";
-import { initTheme } from "./theme.js?v=4874af0";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=4874af0";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, toggleRehearsal, rehearsedCount, } from "./state.js?v=4874af0";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=310f48d";
+import { storageDecisionStore } from "../actions/decisions.js?v=310f48d";
+import { validateActionsPayload } from "../actions/validate.js?v=310f48d";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, rehearsalSwitch, rehearsalBanner, designSystemSwitch, } from "./components.js?v=310f48d";
+import { showToast } from "./toast.js?v=310f48d";
+import { initTheme, initDesignSystem, setDesignSystem, currentDesignSystem, } from "./theme.js?v=310f48d";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=310f48d";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, toggleRehearsal, rehearsedCount, } from "./state.js?v=310f48d";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=4874af0";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=310f48d";
 let state = initialUiState();
 let actions = [];
 /**
@@ -130,6 +130,7 @@ function render() {
     <header class="app-header">
       <div class="app-title">
         Mitch Actions
+        ${designSystemSwitch(currentDesignSystem())}
         ${rehearsalSwitch(state.rehearsal, rehearsedCount(state))}
         ${cases.length
         ? viewSwitch(state.filter === "cases", { cases: cases.length, open: view.counts.needs_you })
@@ -220,6 +221,17 @@ function bindEvents(root) {
         }
         // An empty value is "everyone" — the chip carries no name because there
         // is no holder called everyone.
+        // The design system lives on the document, not in UiState: it paints the
+        // same application rather than changing what the application is, and
+        // nothing derived from state depends on it.
+        if (action === "set-ds" && value) {
+            setDesignSystem(value === "fluent" ? "fluent" : "btrmnt");
+            render();
+            showToast(value === "fluent"
+                ? "Fluent tokens. Same markup, same components — only the token values changed."
+                : "btrmnt tokens.");
+            return;
+        }
         if (action === "toggle-rehearsal") {
             const leaving = state.rehearsal;
             const held = rehearsedCount(state);
@@ -366,6 +378,7 @@ async function main() {
     // The resize listener, attached once here for the same reason the click and
     // keydown listeners are — never from inside render().
     initTheme();
+    initDesignSystem();
     initMasonry();
     // Coming back to this tab is the signal that something may have changed
     // elsewhere. Both events fire in practice — visibilitychange when Teams

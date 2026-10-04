@@ -1,4 +1,4 @@
-import { findAll } from "./rules.js?v=4874af0";
+import { findAll } from "./rules.js?v=310f48d";
 /** The onboarding stages, in workflow order. */
 const STAGES = [
     "MAA received", "Entered", "Assigned", "Deposit", "Compliance", "Listed", "Live",

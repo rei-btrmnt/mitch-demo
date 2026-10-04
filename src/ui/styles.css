@@ -1040,3 +1040,16 @@ html, body {
   border-radius: var(--radius-pill);
   padding: 2px 8px;
 }
+
+/* The design-system switch. A swatch rather than an icon, because the thing
+   it changes is colour — and it shows the brand of the system it would
+   switch TO, so the control previews its own outcome. */
+.ds-switch__swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background: var(--brand-navy-2);
+  border: 1px solid var(--overlay-border);
+}
+:root[data-ds="fluent"] .ds-switch__swatch { background: #16243C; }
+:root:not([data-ds="fluent"]) .ds-switch__swatch { background: #5b5fc7; }
